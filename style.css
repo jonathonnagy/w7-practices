@@ -1,0 +1,89 @@
+/* 1. kellő távolság legyen a beviteli mezők között
+1. kellő távolság legyen a beviteli mezők között és a mezőkben
+2. elég nagy legyen az input mező
+3. label ne legyen egy sorban az inputtal
+4. label és az input össze legyen kötve (lást label for="")
+5. minden képernyőméreten ugyanúgy használható legyen
+6. rendezett legyen legyen egy vonalban
+7. lehessen tabolni (ha formban van benne akkor lehet)
+8. logikus sorrend legyen
+9. aktuális input mező kiemelkedjen
+10. gomb legyen hangsúlyos
+11. legyen megn
+12. kontraszt 
+13. google font*/
+
+* {
+    margin: 0;
+}
+/* #root {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+} */
+
+body {
+    background-color: #003049;
+}
+#root {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    
+}
+
+#form {
+
+    padding: 10px;
+    border: 1px solid #eae2b7;
+    border-radius: 5px;
+    background-color: #fcbf49;
+}
+
+#form div {
+    padding: 5px;
+}
+
+#form div:nth-child(-n+2) input:not([type="checkbox"]){
+    display: block;
+    width: 50%;
+    padding: 5px 50px 5px 5px;
+    margin: 5px;
+    border: 1px solid #eae2b7;
+    border-radius: 5px;
+}
+
+#form div:nth-child(3) input{
+    display: block;
+    outline: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+button {
+    width: 40%;
+    text-align: center;
+    background-color: seagreen;
+    border: 1px solid rgb(107, 114, 44);
+    border-radius: 5px;
+}
