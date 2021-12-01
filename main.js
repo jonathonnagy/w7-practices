@@ -23,8 +23,28 @@ functionName(1,2);
 const inputElement = (type, name, title) =>{
     return `
         <div>
-            <label>${title}</label>
+            <label for='${name}'>${title}</label>
             <input type='${type}' name='${name}'>
+        </div>
+    `;
+}
+const selectElement = (type, name, title, options) =>{
+    let optionsToSelect = '';
+    for (const o of options) {
+        optionsToSelect += `
+            <option>
+                ${o}
+            </option>
+        `;
+    }
+    console.log(optionsToSelect)
+    
+    return `
+        <div>
+          <label for='${name}'>${title}</label>
+          <${type} name='${name}'>
+            ${optionsToSelect}
+            </${type}>
         </div>
     `;
 }
@@ -37,21 +57,28 @@ const inputElement = (type, name, title) =>{
 const formElement = `
     <form id='form'>
         ${inputElement('text', 'firstName', 'Keresztneved')}
-        ${inputElement('file', 'profilePicture', 'Profilképed')}
         ${inputElement('email', 'personalEmail', 'Email címed')}
-        ${inputElement('radio', 'newsLetter', 'Hírlevelet szeretnél kapni')}
+        ${inputElement('file', 'profilePicture', 'Profilképed')}
+        ${inputElement('checkbox', 'newsLetter', 'Hírlevelet szeretnél kapni')}
         ${inputElement('checkbox', 'terms', 'Elfogadom a felhasználási feltételeket')}
+        ${selectElement('select', 'where', 'Hol hallotal rolunk?',['interneten', 'ismerostol', 'egyeb'])}
         <button>Ok</button>
     </form>
 `;
 const formSubmit = (event) =>{
     event.preventDefault();
-    console.log(event.target);
+    const et = event.target;
+    console.log(et)
     event.target.classList.add('submitted');
+    let selectValue = et.querySelector('select[name="where"]').value;
+    console.log(selectValue)
 }
 
 const inputUpdate = (event) =>{
-    document.getElementById('inputValue').innerHTML = event.target.value;
+    if (event.target.getAttribute('name') === 'firstName') {
+        document.getElementById('inputValue').innerHTML = event.target.value;
+    }
+    console.log(event.target.closest('#form'))
 }
 
 function loadEvent() {
