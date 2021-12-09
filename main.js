@@ -1,25 +1,3 @@
-/*
-function functionName(parameter){
-    parameter === 'argument as a string'
-};
-functionName('argument as a string');
-
-const argument = 'argument saved in a variable';
-const functionName = function (parameter){
-    
-    paremeter === 'argument saved in a variable';
-
-};
-functionName(argument);
-
-const functionName = (parameter1, parameter2) {
-    parameter1 === 1;
-    parameter2 === 2;
-};
-functionName(1,2);
-
- */
-
 const inputElement = (type, name, title, req = '') => {
     return `
         <div class='${type}'>
@@ -37,7 +15,6 @@ const selectElement = (type, name, title, options) => {
             </option>
         `;
     }
-    // console.log(optionsToSelect)
 
     return `
         <div>
@@ -48,17 +25,6 @@ const selectElement = (type, name, title, options) => {
         </div>
     `;
 }
-/* 
-    const formElement = '<form>' + inputElement('text', 'firstName') + inputElement('file', 'profilePicture') + inputElement('email', 'personalEmail') + inputElement('radio', 'newsLetter') + inputElement('checkbox', 'terms') + '</form>';
-
-*/
-// const test = 'valami' 'valami2'
-
-// const nameData = {
-//     type: 'text',
-//     name: 'firstName',
-//     label: 'Keresztneved'
-// }
 
 const formFields = [
     {
@@ -112,21 +78,46 @@ const anotherFormFields = [
     }
 ];
 
+const selectFields = {
+    type: 'select',
+    name: 'where',
+    label: 'Hol hallottal rolunk?',
+    options:[
+        'interneten',
+        'ismerostol',
+        'egyeb'
+    ]
+};
+
+const processCountries = async () => {
+    const countryRes = await fetch("https://restcountries.com/v3.1/all");
+    const countryArr = await countryRes.json();
 
 
-// const formElement = `
-//     <form id='form'>
-//         ${inputElement(nameData.type, nameData.name, nameData.label)}
-//         ${inputElement('email', 'personalEmail', 'Email címed', 'required')}
-//         ${inputElement('file', 'profilePicture', 'Profilképed')}
-//         ${inputElement('checkbox', 'newsLetter', 'Hírlevelet szeretnél kapni')}
-//         ${inputElement('checkbox', 'terms', 'Elfogadom a felhasználási feltételeket')}
-//         ${selectElement('select', 'where', 'Hol hallotal rolunk?',['interneten', 'ismerostol', 'egyeb'])}
-//         <button>Ok</button>
-//     </form>
-// `;
+    // ures tomb letrehozas
+    // for of-al vegig iteralni a coutryArray-t
+    // [i].name.official -> Push
+    // return
 
-const formElement = (ffs, id) => {
+    let countries = [];
+    for (const c of countryArr) {
+        countries.push(c.name.official);
+    }
+    return countries;
+}
+console.log(processCountries());
+
+const anotherSelectFields = async () =>{
+    return {
+        type: 'select',
+        name: 'countries',
+        label: 'Orszag',
+        // options:['Spanyol','Olaszorszag']
+        options: await processCountries()
+    };
+}
+
+const formElement = (ffs, id, sel) => {
     let inputs = '';
 
     for (const ff of ffs) {
@@ -135,7 +126,7 @@ const formElement = (ffs, id) => {
     return `
     <form id='${id}'>
         ${inputs}
-        ${selectElement('select', 'where', 'Hol hallotal rolunk?',['interneten', 'ismerostol', 'egyeb'])}
+        ${selectElement(sel.type, sel.name, sel.label,sel.options)}
         <button>Küldés</button>
     </form>
     `;
@@ -167,17 +158,21 @@ const inputUpdate = (event) => {
     console.log(event.target.closest('#form'))
 }
 
-function loadEvent() {
+async function loadEvent() {
     const root = document.getElementById('root');
-    root.insertAdjacentHTML('afterbegin', formElement(anotherFormFields, 'form'));
+    const waitForAnotherSelectField = await anotherSelectFields();
+    root.insertAdjacentHTML('afterbegin', formElement(anotherFormFields, 'form', selectFields));
+    root.insertAdjacentHTML('afterbegin', formElement(formFields, 'form', waitForAnotherSelectField));
     root.insertAdjacentHTML('afterbegin', `
         <div id='inputValue'></div>
     `);
-    root.insertAdjacentHTML('afterbegin', formElement(formFields, 'form'));
     
 
     const form = document.getElementById('form');
     form.addEventListener('submit', formSubmit)
+    form.insertAdjacentHTML('afterbegin', `
+        <div>w7 Form Template</div>
+    `)
 
     const inputList = form.querySelectorAll('input');
 
